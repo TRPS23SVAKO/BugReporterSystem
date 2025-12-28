@@ -3,12 +3,14 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
 /**
  * @property int $id
@@ -18,10 +20,20 @@ use Illuminate\Notifications\Notifiable;
  * @property int $role_id
  * @property bool $is_active
  * @property string $password
+ * @property Role|null $role
+ * @property Collection<int, Project> $ownedProjects
+ * @property Collection<int, Project> $projects
+ * @property Collection<int, Bug> $reportedBugs
+ * @property Collection<int, Bug> $assignedBugs
+ * @property Collection<int, Comment> $comments
+ * @property Collection<int, Attachment> $uploadedAttachments
+ * @property Collection<int, BugEvent> $bugEvents
+ * @property Collection<int, ApiToken> $apiTokens
+ * @property Collection<int, Bug> $watchedBugs
  */
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable;
 
     /**
      * The attributes that are mass assignable.

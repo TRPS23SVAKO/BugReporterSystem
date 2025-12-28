@@ -1,9 +1,9 @@
 <?php
 
-use App\Http\Controllers\BugController;
-use App\Http\Controllers\CommentController;
-use App\Http\Controllers\ProjectController;
-use App\Http\Controllers\TagController;
+use App\Http\Controllers\Api\BugController;
+use App\Http\Controllers\Api\CommentController;
+use App\Http\Controllers\Api\ProjectController;
+use App\Http\Controllers\Api\TagController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/test', function () {
