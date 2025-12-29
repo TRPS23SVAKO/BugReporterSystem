@@ -12,7 +12,7 @@ use Illuminate\Http\JsonResponse;
 
 class CommentController extends Controller
 {
-    private function ensureBugAccess(Bug $bug): void
+    protected function checkAccess(Bug $bug): void
     {
         $uid = auth()->id();
         $isOwner = ($bug->project?->owner_id === $uid);
@@ -34,7 +34,7 @@ class CommentController extends Controller
     {
         $data = $request->validated();
         $bug = Bug::with('project')->findOrFail($data['bug_id']);
-        $this->ensureBugAccess($bug);
+        $this->checkAccess($bug);
         $data['user_id'] = auth()->id();
         $comment = Comment::query()->create($data);
         return response()->json($comment->load('user'), 201);
@@ -43,14 +43,14 @@ class CommentController extends Controller
     public function show(Comment $comment): JsonResponse
     {
         $comment->load(['user', 'bug.project']);
-        $this->ensureBugAccess($comment->bug);
+        $this->checkAccess($comment->bug);
         return response()->json($comment, 200);
     }
 
     public function update(UpdateCommentRequest $request, Comment $comment): JsonResponse
     {
         $comment->load(['bug.project']);
-        $this->ensureBugAccess($comment->bug);
+        $this->checkAccess($comment->bug);
         abort_if($comment->user_id !== auth()->id(), 403, 'Tik autorius gali redaguoti');
         $comment->update($request->validated());
         return response()->json($comment->fresh()->load('user'));
@@ -59,7 +59,7 @@ class CommentController extends Controller
     public function destroy(Comment $comment)
     {
         $comment->load(['bug.project']);
-        $this->ensureBugAccess($comment->bug);
+        $this->checkAccess($comment->bug);
         abort_if(!($comment->user_id === auth()->id() || $comment->bug->project->owner_id === auth()->id()), 403, 'Forbidden');
         $comment->delete();
         return response()->json(null, 204);

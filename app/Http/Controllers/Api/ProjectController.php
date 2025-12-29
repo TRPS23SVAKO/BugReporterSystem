@@ -11,7 +11,7 @@ use Illuminate\Http\JsonResponse;
 
 class ProjectController extends Controller
 {
-    private function checkAccess(Project $project): void
+    protected function checkAccess(Project $project): void
     {
         $uid = auth()->id();
         $isOwner = ($project->owner_id === $uid);

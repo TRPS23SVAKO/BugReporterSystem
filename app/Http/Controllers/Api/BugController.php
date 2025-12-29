@@ -13,7 +13,7 @@ use Illuminate\Http\JsonResponse;
 
 class BugController extends Controller
 {
-    private function checkAccess(Bug $bug): void
+    protected function checkAccess(Bug $bug): void
     {
         $uid = auth()->id();
         $isOwner = ($bug->project?->owner_id === $uid);
