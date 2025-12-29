@@ -1,16 +1,28 @@
 <?php
 
-use App\Http\Controllers\AuthController;
+use App\Http\Controllers\MainController;
+use App\Http\Controllers\UserSettingsController;
+use App\Http\Controllers\View\ProjectViewController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/', [MainController::class, 'index'])->name('home');
+
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/settings', [UserSettingsController::class, 'edit'])->name('settings.edit');
+    Route::patch('/settings', [UserSettingsController::class, 'update'])->name('settings.update');
+    Route::delete('/settings', [UserSettingsController::class, 'destroy'])->name('settings.destroy');
+
+    Route::get('/projects/create', [ProjectViewController::class, 'create'])->name('projects.create');
+    Route::post('/projects/save', [ProjectViewController::class, 'store'])->name('projects.store');
+    Route::get('/projects/view/{project}', [ProjectViewController::class, 'viewSingle'])->name('projects.view');
+
+    Route::prefix('admin')->middleware('admin')->group(function () {
+        include __DIR__.'/admin.php';
+    });
 });
 
-Route::middleware('guest')->group(function () {
-    Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
-//    Route::post('/login', [AuthController::class, 'login'])->name('login.post');
-
-//    Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
-//    Route::post('/register', [AuthController::class, 'register'])->name('register.post');
-});
+require __DIR__.'/auth.php';
