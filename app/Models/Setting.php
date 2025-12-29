@@ -5,10 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * @property mixed $id
- * @property mixed $key
- * @property mixed $value
- * @property mixed $description
+ * @property int $id
+ * @property string $key
+ * @property string $value
+ * @property string $description
  */
 class Setting extends Model
 {
@@ -16,5 +16,9 @@ class Setting extends Model
         'key',
         'value',
         'description',
+    ];
+
+    protected $casts = [
+        'id' => 'int',
     ];
 }
