@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div class="flex justify-between items-center">
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                {{ __('Projektai') }}
+                Projektai
             </h2>
 
             <div>
@@ -19,13 +19,13 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-4">
             <div class="bg-white shadow rounded-lg p-4">
                 <div class="flex justify-between items-center">
-                    @isset($settings['main_page_desc_image'])
+                    @if($image = GlobalSettings::get(GlobalSettings::MainPageDescriptionImage))
                         <div>
-                            <img alt="logo" src="{{ asset($settings['main_page_desc_image']) }}" style="width: 250px"/>
+                            <img alt="logo" src="{{ asset($image) }}" style="width: 250px"/>
                         </div>
-                    @endisset
+                    @endif
                     <p class="break-words">
-                        {{ $settings['main_page_desc_text'] }}
+                        {{ GlobalSettings::get(GlobalSettings::MainPageDescriptionText) }}
                     </p>
                 </div>
             </div>
