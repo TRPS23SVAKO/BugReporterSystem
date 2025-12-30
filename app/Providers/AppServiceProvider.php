@@ -21,14 +21,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        View::composer('*', function ($view) {
-            $settings = cache()->remember(
-                'settings.all',
-                now()->addHours(6),
-                fn () => Setting::query()->pluck('value', 'key')
-            );
-
-            $view->with('settings', $settings);
-        });
+        //
     }
 }
