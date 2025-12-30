@@ -181,96 +181,120 @@
 {{--                </div>--}}
 {{--            </div>--}}
 
-{{--            --}}{{-- BUG STATUSES --}}
-{{--            <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">--}}
-{{--                <h3 class="text-lg font-medium text-gray-900">Bug statuses</h3>--}}
+            {{-- BUG STATUSES --}}
+            <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
+                <h3 class="text-lg font-medium text-gray-900">Klaidų būsenos</h3>
 
-{{--                <form method="post" action="{{ route('admin.bug-statuses.store') }}" class="mt-4 grid grid-cols-1 md:grid-cols-5 gap-4">--}}
-{{--                    @csrf--}}
-{{--                    <div>--}}
-{{--                        <x-input-label value="Key" />--}}
-{{--                        <x-text-input name="key" class="mt-1 block w-full" maxlength="20" required />--}}
-{{--                    </div>--}}
-{{--                    <div>--}}
-{{--                        <x-input-label value="Label" />--}}
-{{--                        <x-text-input name="label" class="mt-1 block w-full" maxlength="50" required />--}}
-{{--                    </div>--}}
-{{--                    <div>--}}
-{{--                        <x-input-label value="Sort" />--}}
-{{--                        <x-text-input name="sort_order" type="number" class="mt-1 block w-full" min="0" max="65535" value="0" />--}}
-{{--                    </div>--}}
-{{--                    <div>--}}
-{{--                        <x-input-label value="Color (hex)" />--}}
-{{--                        <x-text-input name="color" class="mt-1 block w-full" maxlength="6" />--}}
-{{--                    </div>--}}
-{{--                    <div class="flex items-end gap-3">--}}
-{{--                        <label class="inline-flex items-center gap-2 text-sm text-gray-700">--}}
-{{--                            <input type="checkbox" name="is_active" value="1" checked class="rounded border-gray-300">--}}
-{{--                            Active--}}
-{{--                        </label>--}}
-{{--                        <x-primary-button>Create</x-primary-button>--}}
-{{--                    </div>--}}
-{{--                </form>--}}
+                <div class="mt-6 overflow-x-auto">
+                    <table class="min-w-full text-sm">
+                        <thead>
+                        <tr class="text-left text-gray-600">
+                            <th class="py-2">Raktas</th>
+                            <th class="py-2">Pavadinimas</th>
+                            <th class="py-2">Rikiavimas</th>
+                            <th class="py-2">Aktyvi</th>
+                            <th class="py-2">Spalva</th>
+                            <th class="py-2">Veiksmai</th>
+                        </tr>
+                        </thead>
 
-{{--                <div class="mt-6 overflow-x-auto">--}}
-{{--                    <table class="min-w-full text-sm">--}}
-{{--                        <thead>--}}
-{{--                        <tr class="text-left text-gray-600">--}}
-{{--                            <th class="py-2 pr-4">Key</th>--}}
-{{--                            <th class="py-2 pr-4">Label</th>--}}
-{{--                            <th class="py-2 pr-4">Sort</th>--}}
-{{--                            <th class="py-2 pr-4">Active</th>--}}
-{{--                            <th class="py-2 pr-4">Color</th>--}}
-{{--                            <th class="py-2 pr-4">Actions</th>--}}
-{{--                        </tr>--}}
-{{--                        </thead>--}}
-{{--                        <tbody class="divide-y">--}}
-{{--                        @foreach($bugStatuses as $st)--}}
-{{--                            <tr class="align-top">--}}
-{{--                                <td class="py-3 pr-4">{{ $st->key }}</td>--}}
-{{--                                <td class="py-3 pr-4 font-medium text-gray-900">{{ $st->label }}</td>--}}
-{{--                                <td class="py-3 pr-4">{{ $st->sort_order }}</td>--}}
-{{--                                <td class="py-3 pr-4">{{ $st->is_active ? 'Yes' : 'No' }}</td>--}}
-{{--                                <td class="py-3 pr-4">--}}
-{{--                                    @if($st->color)--}}
-{{--                                        <span class="inline-flex items-center px-2 py-1 rounded text-white"--}}
-{{--                                              style="background-color:#{{ $st->color }};">#{{ $st->color }}</span>--}}
-{{--                                    @else--}}
-{{--                                        —--}}
-{{--                                    @endif--}}
-{{--                                </td>--}}
-{{--                                <td class="py-3 pr-4">--}}
-{{--                                    <div class="flex flex-col gap-2">--}}
-{{--                                        <form method="post" action="{{ route('admin.bug-statuses.update', $st) }}" class="grid grid-cols-1 md:grid-cols-6 gap-2">--}}
-{{--                                            @csrf--}}
-{{--                                            @method('patch')--}}
-{{--                                            <x-text-input name="key" class="block w-full" value="{{ $st->key }}" maxlength="20" required />--}}
-{{--                                            <x-text-input name="label" class="block w-full" value="{{ $st->label }}" maxlength="50" required />--}}
-{{--                                            <x-text-input name="sort_order" type="number" class="block w-full" min="0" max="65535" value="{{ $st->sort_order }}" />--}}
-{{--                                            <x-text-input name="color" class="block w-full" value="{{ $st->color }}" maxlength="6" />--}}
-{{--                                            <label class="inline-flex items-center gap-2 text-sm text-gray-700">--}}
-{{--                                                <input type="checkbox" name="is_active" value="1" class="rounded border-gray-300" {{ $st->is_active ? 'checked' : '' }}>--}}
-{{--                                                Active--}}
-{{--                                            </label>--}}
-{{--                                            <x-primary-button>Save</x-primary-button>--}}
-{{--                                        </form>--}}
+                        <tbody class="divide-y">
+                        {{-- CREATE ROW --}}
+                        <tr class="align-middle text-center">
+                            <form id="bugstatus-create"
+                                  method="post"
+                                  action="{{ route('admin.web.bug-statuses.store') }}">
+                                @csrf
+                            </form>
 
-{{--                                        <form method="post" action="{{ route('admin.bug-statuses.destroy', $st) }}">--}}
-{{--                                            @csrf--}}
-{{--                                            @method('delete')--}}
-{{--                                            <x-danger-button onclick="return confirm('Delete bug status?')">Delete</x-danger-button>--}}
-{{--                                        </form>--}}
-{{--                                    </div>--}}
-{{--                                </td>--}}
-{{--                            </tr>--}}
-{{--                        @endforeach--}}
-{{--                        @if($bugStatuses->isEmpty())--}}
-{{--                            <tr><td class="py-4 text-gray-600" colspan="6">No bug statuses yet.</td></tr>--}}
-{{--                        @endif--}}
-{{--                        </tbody>--}}
-{{--                    </table>--}}
-{{--                </div>--}}
-{{--            </div>--}}
+                            <td class="py-3">
+                                <x-text-input form="bugstatus-create" name="key" class="w-full" placeholder="Raktas" required />
+                            </td>
+                            <td class="py-3">
+                                <x-text-input form="bugstatus-create" name="label" class="w-full" placeholder="Pavadinimas" required />
+                            </td>
+                            <td class="py-3">
+                                <x-text-input form="bugstatus-create" name="sort_order" type="number" class="w-full" value="0" min="0" />
+                            </td>
+                            <td class="py-3">
+                                <input form="bugstatus-create" type="checkbox" name="is_active" value="1" checked>
+                            </td>
+                            <td class="py-3">
+                                <div class="flex items-center gap-2">
+                                    <input form="role-create" type="color" value="#3B82F6" class="h-9 w-12 rounded border border-gray-300 p-1" oninput="this.nextElementSibling.value = this.value.replace('#','').toUpperCase()"/>
+                                    <input form="role-create" name="role_color" type="hidden" value="3B82F6"/>
+                                    <span class="text-xs text-gray-500">pasirink</span>
+                                </div>
+                            </td>
+                            <td class="py-3 text-left">
+                                <x-primary-button form="bugstatus-create" class="w-auto px-3 py-2">
+                                    SUKURTI
+                                </x-primary-button>
+                            </td>
+                        </tr>
+
+                        @foreach($bugStatuses as $st)
+                            <tr class="align-middle text-center">
+                                <form id="bugstatus-{{ $st->id }}"
+                                      method="post"
+                                      action="{{ route('admin.web.bug-statuses.update', $st) }}">
+                                    @csrf
+                                    @method('patch')
+                                </form>
+
+                                <td class="py-3">
+                                    <x-text-input form="bugstatus-{{ $st->id }}" name="key" class="w-full" value="{{ $st->key }}" />
+                                </td>
+                                <td class="py-3">
+                                    <x-text-input form="bugstatus-{{ $st->id }}" name="label" class="w-full" value="{{ $st->label }}" />
+                                </td>
+                                <td class="py-3">
+                                    <x-text-input form="bugstatus-{{ $st->id }}" name="sort_order" type="number" class="w-full" value="{{ $st->sort_order }}" min="0" />
+                                </td>
+                                <td class="py-3">
+                                    <input form="bugstatus-{{ $st->id }}" type="checkbox" name="is_active" value="1" {{ $st->is_active ? 'checked' : '' }}>
+                                </td>
+                                <td class="py-3">
+                                    <div class="flex items-center gap-2">
+                                        <input form="bugstatus-{{ $st->id }}" type="color" value="#{{ $st->color }}" class="h-9 w-12 rounded border border-gray-300 p-1"
+                                               oninput="this.nextElementSibling.value = this.value.replace('#','').toUpperCase()"/>
+                                        <input form="bugstatus-{{ $st->id }}" name="color" type="hidden" value="{{ $st->color }}"/>
+                                        <span class="inline-flex items-center px-2 py-1 rounded text-white" style="background-color:#{{ $st->color }};">
+                                            #{{ $st->color }}
+                                        </span>
+                                    </div>
+                                </td>
+                                <td class="py-3 text-center">
+                                    <div class="flex gap-2">
+                                        <x-primary-button form="bugstatus-{{ $st->id }}" class="w-auto px-3 py-2">
+                                            IŠSAUGOTI
+                                        </x-primary-button>
+
+                                        <form method="post"
+                                              action="{{ route('admin.web.bug-statuses.destroy', $st) }}">
+                                            @csrf
+                                            @method('delete')
+                                            <x-danger-button class="w-auto px-3 py-2"
+                                                             onclick="return confirm('Ištrinti?')">
+                                                IŠTRINTI
+                                            </x-danger-button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach
+
+                        @if($bugStatuses->isEmpty())
+                            <tr>
+                                <td class="py-4 text-center text-gray-600" colspan="6">
+                                    Klaidų būsenų dar nėra.
+                                </td>
+                            </tr>
+                        @endif
+                        </tbody>
+                    </table>
+                </div>
+            </div>
 
             {{-- ROLES --}}
             <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
@@ -295,17 +319,18 @@
                             <td class="py-3 pr-4">
                                 <form id="role-create" method="post" action="{{ route('admin.web.roles.store') }}" class="contents">
                                     @csrf
-                                    <x-text-input name="name" class="block w-full" placeholder="mod" maxlength="25" required/>
+                                    <x-text-input name="name" class="block w-full" placeholder="Raktas" maxlength="25" required/>
                                 </form>
                             </td>
 
                             <td class="py-3 pr-4">
-                                <x-text-input form="role-create" name="display_name" class="block w-full" placeholder="Moderatorius" maxlength="25" required/>
+                                <x-text-input form="role-create" name="display_name" class="block w-full" placeholder="Pavadinimas" maxlength="25" required/>
                             </td>
 
                             <td class="py-3 pr-4">
                                 <div class="flex items-center gap-2">
-                                    <input form="role-create" type="color" value="#3B82F6" class="h-9 w-12 rounded border border-gray-300 p-1" oninput="this.nextElementSibling.value = this.value.replace('#','').toUpperCase()"/>
+                                    <input form="role-create" type="color" value="#3B82F6" class="h-9 w-12 rounded border border-gray-300 p-1"
+                                           oninput="this.nextElementSibling.value = this.value.replace('#','').toUpperCase()"/>
                                     <input form="role-create" name="role_color" type="hidden" value="3B82F6"/>
                                     <span class="text-xs text-gray-500">pasirink</span>
                                 </div>
@@ -320,26 +345,24 @@
 
                         @foreach($roles as $role)
                             @php($isSystem = in_array($role->name, ['user','admin'], true))
+                            <form id="role-{{ $role->id }}"
+                                  method="post"
+                                  action="{{ route('admin.web.roles.update', $role) }}">
+                                @csrf
+                                @method('patch')
+                            </form>
                             <tr class="align-top">
                                 <td class="py-3 pr-4 font-medium text-gray-900">
                                     @if($isSystem)
-                                        {{ $role->name }}
+                                        <x-text-input class="block w-full border border-transparent" value="{{ $role->name }}" maxlength="25" disabled/>
                                     @else
-                                        <form id="role-{{ $role->id }}" method="post" action="{{ route('admin.web.roles.update', $role) }}" class="contents">
-                                            @csrf
-                                            @method('patch')
-                                            <x-text-input name="name" class="block w-full" value="{{ $role->name }}" maxlength="25" required/>
-                                        </form>
+                                        <x-text-input form="role-{{ $role->id }}" name="name" class="block w-full" value="{{ $role->name }}" maxlength="25" required/>
                                     @endif
                                 </td>
 
                                 <td class="py-3 pr-4">
                                     @if($isSystem)
-                                        <form id="role-{{ $role->id }}" method="post" action="{{ route('admin.web.roles.update', $role) }}" class="contents">
-                                            @csrf
-                                            @method('patch')
-                                            <x-text-input name="display_name" class="block w-full" value="{{ $role->display_name }}" maxlength="25" required/>
-                                        </form>
+                                        <x-text-input form="role-{{ $role->id }}" name="display_name" class="block w-full" value="{{ $role->display_name }}" maxlength="25" required/>
                                     @else
                                         <x-text-input form="role-{{ $role->id }}" name="display_name" class="block w-full" value="{{ $role->display_name }}" maxlength="25" required/>
                                     @endif
